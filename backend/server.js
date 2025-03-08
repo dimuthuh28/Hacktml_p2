@@ -7,8 +7,8 @@ const cors = require('cors');
 const connectDB = require('./config/db');  
 const teamRoutes = require('./routes/teamRoutes');
 const playerRoutes = require('./routes/playerRoutes');
-// const tournamentRoutes = require('./routes/tournamentRoutes');
-// const leaderboardRoutes = require('./routes/leaderboardRoutes');
+const tournamentRoutes = require('./routes/tournament_Routes');
+const leaderboardRoutes = require('./routes/leaderboardRoutes');
 const users = require('./routes/auth');
 
 
@@ -20,8 +20,8 @@ app.use(express.json());
 // Use the team routes
 app.use('/api/team', teamRoutes);
 app.use('/api/players', playerRoutes);
-// app.use('/api/tournaments', tournamentRoutes);
-// app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/tournaments', tournamentRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/users', users);
 
 app.get('/', (req, res) => {
