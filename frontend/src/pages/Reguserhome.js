@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = () => {
+const Reguserhome = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem("username"); // Get username from localStorage
 
@@ -31,4 +31,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Reguserhome;

@@ -1,0 +1,83 @@
+/* PlayersView.css */
+
+/* Container styling */
+.players-view-container {
+    padding: 20px;
+  }
+  
+  /* Header styling */
+  .players-header {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Search bar styling */
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar .MuiTextField-root {
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Table styling */
+  .table-container {
+    margin-top: 20px;
+  }
+  
+  .MuiTable-root {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .MuiTableCell-root {
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .MuiTableCell-head {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .MuiTableBody-root {
+    background-color: #fff;
+  }
+  
+  .MuiTableRow-root:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Table Row styling */
+  .table-row {
+    cursor: pointer;
+  }
+  
+  /* Responsive Design for smaller screens */
+  @media (max-width: 768px) {
+    .players-header {
+      font-size: 24px;
+    }
+  
+    .search-bar .MuiTextField-root {
+      font-size: 14px;
+      padding: 6px;
+    }
+  
+    .MuiTableCell-root {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+  }
+  
+  

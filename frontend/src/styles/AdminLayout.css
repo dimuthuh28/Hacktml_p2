@@ -1,0 +1,26 @@
+/* AdminLayout.css */
+.layout-container {
+    display: flex;
+  }
+  
+  .layout-content {
+    margin-left: 240px; /* Adjusts content space for sidebar width */
+    padding: 20px;
+    flex-grow: 1;
+  }
+  
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 240px;
+    background-color: #cc1515; /* Sidebar color */
+  }
+  
+  .content {
+    margin-left: 240px; /* Ensure content area has enough space to the right of sidebar */
+    padding: 20px;
+    flex-grow: 1;
+  }
+  

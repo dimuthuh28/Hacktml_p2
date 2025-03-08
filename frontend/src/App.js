@@ -1,21 +1,33 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import Admindash from "./pages/Admindash";
-import Dashboard from "./pages/Dashboard";
+import AdminLayout from "./components/AdminLayout";
 import GuestHomePage from "./pages/GuestHomePage";
 import Login from "./pages/Login";
+import PlayerStats from "./pages/Admin/PlayerStats";
+import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
+import Reguserhome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
+import TournamentSummary from "./pages/Admin/TournementSummary";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<GuestHomePage />} />
-        <Route path="/admindashboard" element={<Admindash />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* after logging to the system user will be redirected */}
+        <Route path="/reguserhome" element={<Reguserhome />} />
+
+         {/* Admin route layout */}
+         <Route path="/admindash" element={<AdminLayout />}>
+          {/* The default route will render AdminDash directly */}
+          <Route index element={<div><h1>Admin Dashboard</h1><p>Welcome to the admin dashboard.</p></div>} /> 
+          <Route path="players" element={<PlayersView />} />
+          <Route path="stats" element={<PlayerStats />} />
+          <Route path="summary" element={<TournamentSummary />} />
+        </Route>
       </Routes>
     </Router>
   );
