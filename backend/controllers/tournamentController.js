@@ -1,6 +1,8 @@
 const Tournament = require('../models/Tournament');
 
 // Get the tournament summary
+const Tournament = require('../models/Tournament');
+
 exports.getTournamentSummary = async (req, res) => {
   try {
     const tournament = await Tournament.aggregate([
@@ -13,9 +15,6 @@ exports.getTournamentSummary = async (req, res) => {
         }
       },
       {
-        $unwind: '$teamDetails'
-      },
-      {
         $group: {
           _id: null,
           totalMatches: { $sum: '$totalMatches' },
@@ -24,12 +23,14 @@ exports.getTournamentSummary = async (req, res) => {
           totalWickets: { $sum: '$totalWickets' },
           totalBallsFaced: { $sum: '$totalBallsFaced' },
           totalOversBowled: { $sum: '$totalOversBowled' },
-          totalRunsConceded: { $sum: '$totalRunsConceded' }
+          totalRunsConceded: { $sum: '$totalRunsConceded' },
+          totalTournaments: { $sum: 1 }, // Count total tournaments
+          totalTeams: { $sum: { $size: "$teams" } } // Count total teams in all tournaments
         }
       }
     ]);
 
-    if (!tournament) {
+    if (!tournament.length) {
       return res.status(404).json({ message: "Tournament summary not found!" });
     }
 
@@ -38,6 +39,7 @@ exports.getTournamentSummary = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: "Server error!" });
   }
 };
+
