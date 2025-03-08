@@ -17,7 +17,7 @@ const GuestHomePage = () => {
     <div>
       <nav className="navbar">
         <div className="logo">
-          <h1>SecureConnect</h1>
+          <h1>Spirit11</h1>
         </div>
         <div className="nav-links">
           {!token ? (
@@ -44,7 +44,7 @@ const GuestHomePage = () => {
       </nav>
 
       <div className="guest-home-content">
-        <h2>Welcome to SecureConnect</h2>
+        <h2>Welcome to Spirit11</h2>
         <p>Your secure authentication system for a safe and personalized experience.</p>
       </div>
     </div>

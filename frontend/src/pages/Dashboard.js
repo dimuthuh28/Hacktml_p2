@@ -14,7 +14,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <nav className="navbar">
         <div className="logo">
-          <h1>SecureConnect</h1>
+          <h1>Spirit11</h1>
         </div>
         <div className="nav-links">
           <button className="nav-button" onClick={handleLogout}>
@@ -24,7 +24,7 @@ const Dashboard = () => {
       </nav>
 
       <div className="dashboard-content">
-        <h2>Hello, {username || "User"}! Welcome to SecureConnect!</h2>
+        <h2>Hello, {username || "User"}! Welcome to Spirit11!</h2>
         <p>Your personalized dashboard is now ready.</p>
       </div>
     </div>
