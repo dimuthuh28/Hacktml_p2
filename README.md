@@ -1,6 +1,6 @@
 # Spirit11 Fantasy Cricket League
 
-Spirit11 is an interactive web application that lets users create their fantasy cricket teams, manage players, and track points based on real-time player performance. Users can compete with others, track their team's position in the leaderboard, and get assistance from an AI-powered chatbot to make informed decisions.
+Spirit11 is an interactive web application that lets users create their fantasy cricket teams, manage players, and track points based on real-time player performance. Users can compete with others, track their team's position on the leaderboard, and get assistance from an AI-powered chatbot to make informed decisions.
 
 ## Prerequisites
 
@@ -52,21 +52,12 @@ Once you have set up the database, run the following commands in their respectiv
 
 Now, you can access the project by navigating to `http://localhost:3000/` in your web browser.
 
-## Database Setup & Configuration
-
-The database is set up using **MongoDB**. To ensure that you have the correct data for testing, use the database dump provided in the `db_dump` folder.
-
-1.  Import the dump into your MongoDB instance using the `mongorestore` command:
-
-`mongorestore --uri="mongodb://localhost:27017" db_dump/` 
-
-2.  The MongoDB collections are automatically populated with test data.
 
 ## Assumptions Made During Development
 
--   **User Authentication**: Users can sign up and log in using email/password. No third-party authentication is integrated (e.g., Google or Facebook login).
--   **Player Budget**: A fixed budget is set for users to select players for their fantasy teams.
--   **Team Size**: Each fantasy team has a 11 of players.
+-   **User Authentication**: Users can sign up and log in using email/password. No third-party authentication (e.g., Google or Facebook login) is integrated.
+-   **Player Budget**: Users select players for their fantasy teams using a fixed budget.
+-   **Team Size**: Each fantasy team has 11 players.
 -   **Player Performance Data**: The project uses static player performance data for testing. In a real-world scenario, this would be dynamically fetched from external APIs.
 -   **Leaderboard**: Points are calculated based on overall performance, and the leaderboard is updated accordingly.
 
