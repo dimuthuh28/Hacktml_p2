@@ -27,6 +27,10 @@ const Reguserhome = () => {
         <h2>Hello, {username || "User"}! Welcome to Spirit11!</h2>
         <p>Your personalized dashboard is now ready.</p>
       </div>
+
+      <button onClick={() => navigate("/chatbot")}>
+        Go to Chatbot
+      </button>
     </div>
   );
 };

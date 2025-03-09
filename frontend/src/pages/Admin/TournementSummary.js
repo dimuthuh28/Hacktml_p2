@@ -1,9 +1,10 @@
 import "../../styles/TournamentSummary.css";
+import "../../styles/TournamentSummary.css"
 
 import { Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import axios from "axios";
+// import axios from "axios";
 
 const TournamentSummary = () => {
     const [players, setPlayers] = useState([]);
@@ -30,39 +31,41 @@ const TournamentSummary = () => {
     const sortedByBowlingStrikeRate = [...players].sort((a, b) => b.calculated.bowlingStrikeRate - a.calculated.bowlingStrikeRate);
     const sortedByEconomyRate = [...players].sort((a, b) => a.calculated.economyRate - b.calculated.economyRate); // Lower is better
 
+    // 🏏 Function to Render Tables
     const renderTable = (title, sortedList, columns) => (
-        <>
-            <Typography variant="h6" sx={{ mt: 3 }}>{title}</Typography>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell><strong>Rank</strong></TableCell>
-                        <TableCell><strong>Player Name</strong></TableCell>
-                        {columns.map((col) => (
-                            <TableCell key={col.key}><strong>{col.label}</strong></TableCell>
-                        ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {sortedList.slice(0, 5).map((player, index) => (
-                        <TableRow key={player._id}>
-                            <TableCell>{index + 1}</TableCell>
-                            <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
-                            {columns.map((col) => (
-                                <TableCell key={col.key}>
-                                    {typeof player[col.category][col.key] === "number"
-                                        ? (player[col.category][col.key] % 1 === 0
-                                            ? player[col.category][col.key] // No decimal if whole number
-                                            : player[col.category][col.key].toFixed(2)) // Keep two decimals otherwise
-                                        : player[col.category][col.key]}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </>
-    );
+      <>
+          <Typography variant="h6" sx={{ mt: 3 }}>{title}</Typography>
+          <Table>
+              <TableHead>
+                  <TableRow>
+                      <TableCell><strong>Rank</strong></TableCell>
+                      <TableCell><strong>Player Name</strong></TableCell>
+                      {columns.map((col) => (
+                          <TableCell key={col.key}><strong>{col.label}</strong></TableCell>
+                      ))}
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  {sortedList.slice(0, 5).map((player, index) => (
+                      <TableRow key={player._id}>
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
+                          {columns.map((col) => (
+                              <TableCell key={col.key}>
+                                  {typeof player[col.category][col.key] === "number" 
+                                      ? (player[col.category][col.key] % 1 === 0 
+                                          ? player[col.category][col.key] // No decimal if whole number
+                                          : player[col.category][col.key].toFixed(2)) // Keep two decimals otherwise
+                                      : player[col.category][col.key]}
+                              </TableCell>
+                          ))}
+                      </TableRow>
+                  ))}
+              </TableBody>
+          </Table>
+      </>
+  );
+  
 
     return (
         <Container>
@@ -101,6 +104,7 @@ const TournamentSummary = () => {
             {renderTable("Top 5 Players by Economy Rate", sortedByEconomyRate, [
                 { key: "economyRate", label: "Economy Rate", category: "calculated" },
             ])}
+
         </Container>
     );
 };

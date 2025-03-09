@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import AdminLayout from "./components/AdminLayout";
+import ChatBot from "./pages/ChatBot";
 import GuestHomePage from "./pages/GuestHomePage";
 import Login from "./pages/Login";
 import PlayerStatsView from "./pages/Admin/PlayerStats";
@@ -8,14 +9,15 @@ import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
 import RegUserHome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
-import TournamentSummary from "./pages/Admin/TournementSummary";
 import SpiriterChat from "./components/spiriterChat"
+import TournamentSummary from "./pages/Admin/TournementSummary";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<GuestHomePage />} />
+        <Route path="/Chatbot" element={<ChatBot />} />
         <Route path="/spiriter" element={<SpiriterChat />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
