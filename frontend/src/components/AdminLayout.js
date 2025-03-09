@@ -1,9 +1,13 @@
 import "../styles/AdminLayout.css"
 
-// import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom"; // This renders the nested routes
 import React from "react";
 import Sidebar from "./Sidebar";
+
+// import { Box } from "@mui/material";
+
+
+
 
 const AdminLayout = () => {
   return (

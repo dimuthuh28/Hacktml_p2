@@ -25,6 +25,11 @@ const Sidebar = () => {
             Tournament Summary
           </Link>
         </li>
+        <li>
+          <Link to="/chatbot" className="sidebar-item">
+            Spirit11
+          </Link>
+        </li>
       </ul>
     </div>
   );
