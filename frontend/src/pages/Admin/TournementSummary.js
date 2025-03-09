@@ -3,8 +3,6 @@ import "../../styles/TournamentSummary.css";
 import { Container, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import axios from "axios";
-
 const TournamentSummary = () => {
     const [players, setPlayers] = useState([]);
 
