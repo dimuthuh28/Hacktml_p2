@@ -3,6 +3,7 @@ import "../styles/Auth.css";
 import React, { useState } from "react";
 
 import InputField from "../components/InputField";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +38,7 @@ const Login = () => {
       if (roleRes.data.role === "admin") {
         navigate("/admindash"); // Navigate to admin dashboard if role is admin
       } else {
-        navigate("/reguserhome"); // Navigate to user dashboard if role is user
+        navigate("/dashboard"); // Navigate to user dashboard if role is user
       }
     } catch (err) {
       setError(err.response?.data?.error || "Login failed!");
@@ -68,13 +69,18 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="auth-button" type="submit">
-            Login
-          </button>
-          <button className="auth-button" onClick={handleGuestLogin}>
-            Login as a Guest
-          </button>
+          <div className="auth-button-group">  
+            <button className="auth-button" type="submit">
+              Login
+            </button>
+            <button type="button" className="auth-button" onClick={handleGuestLogin}>
+              Login as a Guest
+            </button>
+          </div>
         </form>
+        <div className="auth-links">
+          Don't have an account? <Link to="/signup">Sign up</Link>
+        </div>
       </div>
     </div>
   );

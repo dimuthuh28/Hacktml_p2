@@ -25,7 +25,6 @@ const getPlayerById = async (req, res) => {
       ...player.toObject(),
       calculated: {
         ...player.calculated,
-
         bowlingStrikeRate: player.calculated.bowlingStrikeRate === 0 
           ? "Undefined"  // If no wickets, set "Undefined"
           : player.calculated.bowlingStrikeRate.toFixed(2)
@@ -38,38 +37,43 @@ const getPlayerById = async (req, res) => {
   }
 };
 
+
 // Add a new player
 const addPlayer = async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      university,
-      category,
-      stats
-    } = req.body;
+    const { firstName, lastName, university, category, stats } = req.body;
 
+    // Validate required fields
     if (!firstName || !lastName || !university || !category) {
-      return res.status(400).json({ message: "All required fields must be filled" });
+      return res.status(400).json({ message: "All required fields must be provided." });
     }
 
+    // Create a new player
     const newPlayer = new Player({
       firstName,
       lastName,
       university,
       category,
-      stats
+      stats: {
+        totalRuns: stats?.totalRuns || 0,
+        ballsFaced: stats?.ballsFaced || 0,
+        inningsPlayed: stats?.inningsPlayed || 0,
+        wickets: stats?.wickets || 0,
+        oversBowled: stats?.oversBowled || 0,
+        runsConceded: stats?.runsConceded || 0
+      }
     });
 
+    // Save the player to the database
     await newPlayer.save();
-    res.status(201).json({ message: "Player added successfully", player: newPlayer });
+    
+    return res.status(201).json({ message: "Player added successfully!", player: newPlayer });
 
   } catch (error) {
-    res.status(500).json({ message: "Error adding player", error });
+    console.error("Error adding player:", error);
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
-
-module.exports = { getAllPlayers, getPlayerById, addPlayer };  
 
 // Update player by ID
 const updatePlayer = async (req, res) => {
@@ -103,4 +107,53 @@ const deletePlayer = async (req, res) => {
   }
 };
 
-module.exports = { getAllPlayers, getPlayerById, addPlayer, updatePlayer, deletePlayer };
+// Update Player Stats
+// Update Player Stats
+const updatePlayerStats = async (req, res) => {
+  const { id } = req.params; // Using id from the URL params
+  const {
+    totalRuns,
+    ballsFaced,
+    inningsPlayed,
+    wickets,
+    oversBowled,
+    runsConceded,
+    category
+  } = req.body;
+
+  try {
+    // Find the player by ID
+    const player = await Player.findById(id);
+
+    if (!player) {
+      return res.status(404).json({ message: 'Player not found' });
+    }
+
+    // Update category if provided
+    if (category !== undefined) {
+      player.category = category;
+    }
+
+    // Update the stats only if new values are provided
+    if (totalRuns !== undefined) player.stats.totalRuns = totalRuns;
+    if (ballsFaced !== undefined) player.stats.ballsFaced = ballsFaced;
+    if (inningsPlayed !== undefined) player.stats.inningsPlayed = inningsPlayed;
+    if (wickets !== undefined) player.stats.wickets = wickets;
+    if (oversBowled !== undefined) player.stats.oversBowled = oversBowled;
+    if (runsConceded !== undefined) player.stats.runsConceded = runsConceded;
+
+    // Mark stats as modified to ensure the pre-save hook runs
+    player.markModified('stats');
+    
+    // Save the updated player stats - this will trigger the calculateStats() method
+    await player.save();
+
+    // Send response with updated player
+    res.status(200).json({ message: 'Player stats updated successfully', player });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { getAllPlayers, getPlayerById, addPlayer, updatePlayer, deletePlayer ,updatePlayerStats};
