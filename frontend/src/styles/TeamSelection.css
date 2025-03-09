@@ -14,15 +14,34 @@
 }
 
 .error {
-  color: red;
-  font-size: 16px;
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 5px;
   margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.success {
+  color: #388e3c;
+  background-color: #e8f5e9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.info-message {
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px auto;
+  max-width: 600px;
 }
 
 .player-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .player-card {
@@ -30,14 +49,15 @@
   border-radius: 10px;
   padding: 15px;
   margin: 10px;
-  width: 150px;
+  width: 180px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .player-card:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .profile-pic {
@@ -61,20 +81,45 @@
 
 .selected-players {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .selected-players ul {
   list-style-type: none;
   padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .selected-players li {
   font-size: 16px;
   margin: 5px 0;
   color: #333;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
 
-.submit-button {
+.selected-players li:hover {
+  background-color: #e0e0e0;
+}
+
+.selected-player-item {
+  position: relative;
+}
+
+.remove-icon {
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.submit-button, .view-leaderboard-button {
   background-color: #11134F;
   color: white;
   font-size: 16px;
@@ -83,7 +128,7 @@
   border-radius: 5px;
   margin-top: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .submit-button:disabled {
@@ -91,6 +136,7 @@
   cursor: not-allowed;
 }
 
-.submit-button:hover {
+.submit-button:hover:not(:disabled), .view-leaderboard-button:hover {
   background-color: #3b4e85;
+  transform: scale(1.05);
 }
