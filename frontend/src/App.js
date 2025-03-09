@@ -26,7 +26,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* after logging to the system user will be redirected */}
-        <Route path="/dashboard" element={<RegUserHome />} />
+        <Route path="/Admindashboard" element={<RegUserHome />} />
 
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/Team" element={<TeamSelection />} />
