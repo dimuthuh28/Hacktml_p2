@@ -50,7 +50,7 @@ const Navbar = ({ isLoggedIn, username, role }) => {
   return (
     <nav className="navbar">
       <div className="logo">
-        <h1>SecureConnect</h1>
+        <h1>Spirit11</h1>
       </div>
       
       <div className="menu-toggle" onClick={toggleMenu}>
@@ -62,9 +62,20 @@ const Navbar = ({ isLoggedIn, username, role }) => {
       <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
         {isLoggedIn ? (
           <>
-            <button className="nav-button" onClick={() => { navigate(role === 'admin' ? '/admin' : '/dashboard'); setMenuOpen(false); }}>
-              {role === 'admin' ? 'Admin Panel' : 'Dashboard'}
-            </button>
+            {role === 'admin' ? (
+              <button className="nav-button" onClick={() => { navigate('/admindash'); setMenuOpen(false); }}>
+                Admin Panel
+              </button>
+            ) : (
+              <>
+                <button className="nav-button" onClick={() => { navigate('/Leaderboard'); setMenuOpen(false); }}>
+                  Leaderboard
+                </button>
+                <button className="nav-button" onClick={() => { navigate('/Team'); setMenuOpen(false); }}>
+                  Select Team
+                </button>
+              </>
+            )}
             <button className="nav-button" onClick={handleLogout}>
               Logout
             </button>

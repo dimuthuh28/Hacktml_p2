@@ -7,33 +7,27 @@ import Login from "./pages/Login";
 import PlayerStatsView from "./pages/Admin/PlayerStats";
 import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
-import RegUserHome from "./pages/Reguserhome";
 import Reguserhome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
 import SpiriterChat from "./components/spiriterChat";
-import Navbar-u from "./components/Navbar-u";
 import UserDashboard from "./pages/Dashboard";
 import TeamSelection from "./components/TeamSelection";
 
 function App() {
   return (
     <Router>
-      <Navbar-u />
-
       <Routes>
         <Route path="/" element={<GuestHomePage />} />
         <Route path="/Chatbot" element={<ChatBot />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        {/* after logging to the system user will be redirected */}
-        <Route path="/Admindashboard" element={<RegUserHome />} />
-
+        
+        {/* Regular user routes */}
+        <Route path="/reguserhome" element={<Reguserhome />} />
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/Team" element={<TeamSelection />} />
-
-        {/* After login, the user will be redirected */}
-        <Route path="/reguserhome" element={<RegUserHome />} />
+        <Route path="/Leaderboard" element={<Reguserhome />} /> {/* Temporary redirect to Reguserhome */}
 
         {/* Admin route layout */}
         <Route path="/admindash" element={<AdminLayout />}>
