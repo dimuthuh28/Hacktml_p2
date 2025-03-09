@@ -12,3 +12,4 @@ router.get('/:id', getPlayerById);
 router.post('/addPlayer', addPlayer);  
 
 module.exports = router;
+
