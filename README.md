@@ -3,7 +3,7 @@
 SpiritX_HACKtML_02
 README file
 
-Project 1 - SPIRIT11 
+Project 2 - SPIRIT11 
 
 
 1).  Instructions to run the project
