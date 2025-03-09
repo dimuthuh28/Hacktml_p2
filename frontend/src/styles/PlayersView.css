@@ -82,12 +82,12 @@
   
   /* Buttons Styling */
 .MuiButton-containedWarning {
-  background-color: #2fcc1e !important; /* Orange for Edit */
+  background-color: #2367e7 !important; /* Orange for Edit */
   color: white;
 }
 
 .MuiButton-containedWarning:hover {
-  background-color: #089200 !important;
+  background-color: #0b44ad !important;
 }
 
 .MuiButton-containedError {
@@ -100,12 +100,12 @@
 }
 
 .MuiButton-containedPrimary {
-  background-color: #388e3c !important; /* Green for Save */
+  background-color: #2367e7 !important; /* Green for Save */
   color: white;
 }
 
 .MuiButton-containedPrimary:hover {
-  background-color: #2e7d32 !important;
+  background-color: #0b44ad !important;
 }
 
 .MuiButton-containedSecondary {

@@ -101,4 +101,35 @@ const deletePlayer = async (req, res) => {
   }
 };
 
-module.exports = { getAllPlayers, getPlayerById, addPlayer, updatePlayer, deletePlayer };
+// Update player stats
+const updatePlayerStats = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { category, matchesPlayed, totalRuns, ballsFaced, wickets } = req.body;
+
+    // Find the player by ID and update the stats
+    const updatedPlayer = await Player.findByIdAndUpdate(
+      id,
+      {
+        category,
+        "stats.inningsPlayed": matchesPlayed,
+        "stats.totalRuns": totalRuns,
+        "stats.ballsFaced": ballsFaced,
+        "stats.wickets": wickets,
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedPlayer) {
+      return res.status(404).json({ message: "Player not found" });
+    }
+
+    res.status(200).json(updatedPlayer);
+  } catch (error) {
+    console.error("Error updating player stats:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+module.exports = { getAllPlayers, getPlayerById, addPlayer, updatePlayer, deletePlayer ,updatePlayerStats};
