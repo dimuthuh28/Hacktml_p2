@@ -9,12 +9,14 @@ import React from "react";
 import Reguserhome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
+import SpiriterChat from "./components/spiriterChat"
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<GuestHomePage />} />
+        <Route path="/spiriter" element={<SpiriterChat />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* after logging to the system user will be redirected */}
