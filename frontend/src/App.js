@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import PlayerStatsView from "./pages/Admin/PlayerStats";
 import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
-import RegUserHome from "./pages/RegUserHome";
+import RegUserHome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
 
