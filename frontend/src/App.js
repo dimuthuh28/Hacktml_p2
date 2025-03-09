@@ -6,9 +6,10 @@ import Login from "./pages/Login";
 import PlayerStatsView from "./pages/Admin/PlayerStats";
 import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
-import RegUserHome from "./pages/RegUserHome";
+import Reguserhome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
+import Chatbot from "./pages/Chatbot/Chatbot";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* after logging to the system user will be redirected */}
-        <Route path="/dashboard" element={<RegUserHome />} />
+        <Route path="/dashboard" element={<Reguserhome />} />
+        <Route path="/chatbot" element={<Chatbot />} />
 
          {/* Admin route layout */}
          <Route path="/admindash" element={<AdminLayout />}>

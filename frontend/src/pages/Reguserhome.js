@@ -1,5 +1,7 @@
 import React from "react";
+import "../styles/AdminLayout.css";
 import { useNavigate } from "react-router-dom";
+
 
 const Reguserhome = () => {
   const navigate = useNavigate();
@@ -20,6 +22,11 @@ const Reguserhome = () => {
           <button className="nav-button" onClick={handleLogout}>
             Logout
           </button>
+        </div>
+        <div className="nav-links">
+          <button className="nav-button" onClick={() => navigate("/chatbot")}>
+            Chatbot
+        </button>
         </div>
       </nav>
 
