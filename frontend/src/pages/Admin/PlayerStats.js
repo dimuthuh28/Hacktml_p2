@@ -2,6 +2,7 @@ import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTit
 import { useEffect, useState } from "react";
 
 import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
 
@@ -174,8 +175,25 @@ const PlayerStatsView = () => {
       <Paper style={{ padding: 20, marginTop: 20 }}>
         <List>
           {filteredPlayers.map((player) => (
-            <ListItem button onClick={() => handlePlayerClick(player._id)} key={player._id}>
+            <ListItem 
+              key={player._id} 
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.04)' }
+              }}
+            >
               <ListItemText primary={`${player.firstName} ${player.lastName}`} />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                startIcon={<VisibilityIcon />}
+                onClick={() => handlePlayerClick(player._id)}
+              >
+                View
+              </Button>
             </ListItem>
           ))}
         </List>
