@@ -143,6 +143,7 @@ const PlayerStatsView = () => {
                   <Box>
                     <Typography variant="body1"><strong>Points:</strong> {expandedPlayer.calculated.points}</Typography>
                     <Typography variant="body1"><strong>Player Value:</strong> {expandedPlayer.calculated.value}</Typography>
+                    <Typography variant="body1"><strong>Value in Rupees:</strong> {(expandedPlayer.calculated.points * 9 + 100)*1000}</Typography>
                   </Box>
                 )}
               </Box>
