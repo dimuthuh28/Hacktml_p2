@@ -47,14 +47,6 @@ const TournamentSummary = () => {
 
     return (
         <Container>
-            <TextField
-                label="Search Players"
-                variant="outlined"
-                fullWidth
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                margin="normal"
-            />
             
             <h3>Top 5 Players by Most Runs</h3>
             <Table>
