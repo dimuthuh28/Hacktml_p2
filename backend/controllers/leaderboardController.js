@@ -1,46 +1,55 @@
+const Team = require('../models/Team');
 const Leaderboard = require('../models/Leaderboard');
-const Player = require('../models/Player');
-const { updatePlayerStats } = require('../utils/leaderboardUtility');
+const User = require('../models/User');
 
-// Get the leaderboard (sorted by points or relevant stats)
-exports.getLeaderboard = async (req, res) => {
+const getTeamLeaderboard = async (req, res) => {
   try {
-    // Fetch players and their stats, sorted by points (descending)
-    const leaderboard = await Leaderboard.find()
-      .populate('player', 'name')  // Populate player details (name)
-      .populate('team', 'name')  // Populate team details (name)
-      .sort({ points: -1 })  // Sort leaderboard by points (or you can use total runs, wickets, etc.)
-      .limit(10);  // Get top 10 players
+    const leaderboard = await Team.aggregate([
+      {
+        $lookup: {
+          from: "leaderboards",
+          localField: "selectedPlayers",
+          foreignField: "player",
+          as: "playerStats"
+        }
+      },
+      {
+        $addFields: {
+          totalPoints: { $sum: "$playerStats.points" }
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+      {
+        $unwind: "$userInfo"
+      },
+      {
+        $project: {
+          _id: 0,
+          teamId: "$_id",
+          user: "$userInfo.username",
+          totalPoints: 1
+        }
+      },
+      { $sort: { totalPoints: -1 } }
+    ]);
 
-    res.json(leaderboard);
+    // Assign ranks dynamically
+    leaderboard.forEach((team, index) => {
+      team.rank = index + 1;
+    });
+
+    res.status(200).json({ success: true, leaderboard });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+    console.error("Error fetching leaderboard:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-exports.updateMatchStats = async (req, res) => {
-  const { playerId, runs, wickets, points } = req.body;
-
-  try {
-    await updatePlayerStats(playerId, runs, wickets, points);  // Call the utility function
-    res.status(200).json({ message: 'Player stats updated successfully!' });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ message: 'Failed to update player stats' });
-  }
-};
-
-// Controller to handle updating player stats
-exports.updatePlayerStatsController = async (req, res) => {
-  try {
-    const { playerId, runs, wickets, points } = req.body;
-    
-    // Call the utility function to update player stats
-    await updatePlayerStats(playerId, runs, wickets, points);
-    
-    res.status(200).json({ message: 'Player stats updated successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating player stats', error });
-  }
-};
+module.exports = { getTeamLeaderboard };

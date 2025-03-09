@@ -10,14 +10,15 @@ import Reguserhome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
 import SpiriterChat from "./components/spiriterChat";
-import Navbar-u from "./components/Navbar-u";
+import Navbar_u from "./components/Navbar-u";
 import UserDashboard from "./pages/Dashboard";
 import TeamSelection from "./components/TeamSelection";
+import Leaderboard from "./components/Leaderboard";
 
 function App() {
   return (
     <Router>
-      <Navbar-u />
+      <Navbar_u />
 
       <Routes>
         <Route path="/" element={<GuestHomePage />} />
@@ -26,6 +27,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/Team" element={<TeamSelection />} />
+        <Route path="/Leaderboard" element={<Leaderboard />} />
 
         {/* After login, the user will be redirected */}
         <Route path="/reguserhome" element={<Reguserhome />} />

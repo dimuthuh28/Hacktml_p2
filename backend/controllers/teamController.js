@@ -1,34 +1,51 @@
 const Team = require('../models/Team');
 const Player = require('../models/Player');
+const Leaderboard = require('../models/Leaderboard');
+const User = require('../models/User');
 
-// Select players for the team
 exports.selectTeam = async (req, res) => {
   try {
     const { userId, playerIds } = req.body;
 
+    // Check if the user already has a team
+    const existingTeam = await Team.findOne({ userId });
+    if (existingTeam) {
+      return res.status(400).json({ message: "You have already created a team. Changes are not allowed!" });
+    }
+
     // Fetch selected players
     const players = await Player.find({ _id: { $in: playerIds } });
 
-    // Calculate total cost
-    const totalCost = players.reduce((sum, player) => sum + player.calculated.value, 0);
-
-    if (totalCost > 9000000) {
-      return res.status(400).json({ message: "Budget exceeded!" });
-    }
-
-    // Check if exactly 11 players are selected
+    // Validate exactly 11 players
     if (playerIds.length !== 11) {
       return res.status(400).json({ message: "You must select exactly 11 players." });
     }
 
-    // Save the team or update if the team exists
-    const team = await Team.findOneAndUpdate(
-      { userId },
-      { selectedPlayers: playerIds, remainingBudget: 9000000 - totalCost },
-      { upsert: true, new: true }
-    );
+    // Calculate total cost
+    const totalCost = players.reduce((sum, player) => sum + player.calculated.value, 0);
+    if (totalCost > 9000000) {
+      return res.status(400).json({ message: "Budget exceeded!" });
+    }
 
-    res.json({ message: "Team selected successfully!", team });
+    // Calculate total team points
+    const totalPoints = players.reduce((sum, player) => sum + (player.points || 0), 0);
+
+    // Create and save the team
+    const team = new Team({
+      userId,
+      selectedPlayers: playerIds,
+      remainingBudget: 9000000 - totalCost
+    });
+
+    await team.save();
+
+    // Add to leaderboard
+    await Leaderboard.create({
+      team: team._id,
+      points: totalPoints
+    });
+
+    res.status(201).json({ message: "Team created successfully!", team });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -53,40 +70,23 @@ exports.getTeam = async (req, res) => {
   }
 };
 
-// Update the team budget when a player is added or removed
-exports.updateBudget = async (req, res) => {
+// Get leaderboard (ranked by team points)
+exports.getLeaderboard = async (req, res) => {
   try {
-    const { userId, playerId, action } = req.body; // action: 'add' or 'remove'
+    const leaderboard = await Leaderboard.find()
+      .sort({ points: -1 }) // Sort by highest points first
+      .populate({
+        path: 'team',
+        populate: { path: 'userId', select: 'username' } // Get the user (team creator) name
+      });
 
-    const player = await Player.findById(playerId);
-    if (!player) {
-      return res.status(404).json({ message: "Player not found!" });
-    }
+    const rankedLeaderboard = leaderboard.map((entry, index) => ({
+      rank: index + 1,
+      user: entry.team.userId.username, // User who created the team
+      points: entry.points
+    }));
 
-    const team = await Team.findOne({ userId });
-    if (!team) {
-      return res.status(404).json({ message: "Team not found!" });
-    }
-
-    let newBudget;
-    if (action === 'add') {
-      newBudget = team.remainingBudget - player.calculated.value;
-    } else if (action === 'remove') {
-      newBudget = team.remainingBudget + player.calculated.value;
-    } else {
-      return res.status(400).json({ message: "Invalid action!" });
-    }
-
-    // If the budget is exceeded
-    if (newBudget < 0) {
-      return res.status(400).json({ message: "Budget exceeded!" });
-    }
-
-    // Update the team with the new budget
-    team.remainingBudget = newBudget;
-    await team.save();
-
-    res.json({ message: "Budget updated successfully!", team });
+    res.json(rankedLeaderboard);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
