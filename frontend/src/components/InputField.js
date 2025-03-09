@@ -1,10 +1,10 @@
 import React from "react";
 
-const InputField = ({ type, placeholder, value, onChange, error }) => {
+const InputField = ({ type, placeholder, value, onChange, error, label }) => {
   return (
-    <div>
+    <div className="input-field">
+      {label && <label>{label}</label>}
       <input
-        className="auth-input"
         type={type}
         placeholder={placeholder}
         value={value}

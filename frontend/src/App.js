@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import PlayerStatsView from "./pages/Admin/PlayerStats";
 import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
-import Reguserhome from "./pages/Reguserhome";
+import RegUserHome from "./pages/RegUserHome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
 
@@ -18,7 +18,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         {/* after logging to the system user will be redirected */}
-        <Route path="/reguserhome" element={<Reguserhome />} />
+        <Route path="/dashboard" element={<RegUserHome />} />
 
          {/* Admin route layout */}
          <Route path="/admindash" element={<AdminLayout />}>
