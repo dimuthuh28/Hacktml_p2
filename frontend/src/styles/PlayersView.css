@@ -80,4 +80,39 @@
     }
   }
   
-  
+  /* Buttons Styling */
+.MuiButton-containedWarning {
+  background-color: #2fcc1e !important; /* Orange for Edit */
+  color: white;
+}
+
+.MuiButton-containedWarning:hover {
+  background-color: #089200 !important;
+}
+
+.MuiButton-containedError {
+  background-color: #d32f2f !important; /* Red for Delete */
+  color: white;
+}
+
+.MuiButton-containedError:hover {
+  background-color: #b71c1c !important;
+}
+
+.MuiButton-containedPrimary {
+  background-color: #388e3c !important; /* Green for Save */
+  color: white;
+}
+
+.MuiButton-containedPrimary:hover {
+  background-color: #2e7d32 !important;
+}
+
+.MuiButton-containedSecondary {
+  background-color: #757575 !important; /* Gray for Cancel */
+  color: white;
+}
+
+.MuiButton-containedSecondary:hover {
+  background-color: #616161 !important;
+}
