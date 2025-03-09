@@ -1,0 +1,81 @@
+/* TournamentSummary.css */
+.summary-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .summary-header {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .summary-overview {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .summary-overview h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .summary-overview p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+  }
+  
+  .summary-table th,
+  .summary-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .summary-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  .summary-table td {
+    background-color: #fff;
+  }
+  
+  .summary-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .summary-leaderboard {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .summary-leaderboard div {
+    width: 32%;
+    background-color: #e9f0f8;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .summary-leaderboard div h3 {
+    font-size: 22px;
+    margin: 0;
+  }
+  
+  .summary-leaderboard div p {
+    font-size: 18px;
+    color: #333;
+  }
+  
