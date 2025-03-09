@@ -1,28 +1,74 @@
-import React, { useState, useEffect } from "react";
 import "../styles/TeamSelection.css";
 
-const TeamSelection = ({ user }) => {
+import React, { useEffect, useState } from "react";
+
+const TeamSelection = () => {
   const [players, setPlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
-  const [remainingBudget, setRemainingBudget] = useState(9000000); // Initial budget
+  const [remainingBudget, setRemainingBudget] = useState(9000000);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [teamExists, setTeamExists] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  // Get user ID from localStorage on component mount
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    } else {
+      setErrorMessage("You must be logged in to select a team.");
+    }
+  }, []);
 
   // Fetch available players from the backend
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/players"); 
+        const response = await fetch("http://localhost:5000/api/players");
         const data = await response.json();
         setPlayers(data);
       } catch (error) {
         console.error("Error fetching players:", error);
+        setErrorMessage("Failed to load players. Please try again later.");
       }
     };
+
     fetchPlayers();
   }, []);
 
+  // Check if user already has a team
+  useEffect(() => {
+    const checkExistingTeam = async () => {
+      if (userId) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/team/${userId}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data.team) {
+              setTeamExists(true);
+              setErrorMessage("You have already created a team. Changes are not allowed!");
+            }
+          }
+        } catch (error) {
+          console.error("Error checking existing team:", error);
+        }
+      }
+    };
+
+    if (userId) {
+      checkExistingTeam();
+    }
+  }, [userId]);
+
   // Handle player selection
   const handlePlayerSelection = (player) => {
+    if (teamExists) {
+      setErrorMessage("You have already created a team. Changes are not allowed!");
+      return;
+    }
+
     if (selectedPlayers.length < 11) {
       if (remainingBudget >= player.calculated.value) {
         setSelectedPlayers([...selectedPlayers, player]);
@@ -36,9 +82,21 @@ const TeamSelection = ({ user }) => {
     }
   };
 
+  // Handle player removal
+  const handlePlayerRemoval = (playerToRemove) => {
+    if (teamExists) {
+      setErrorMessage("You have already created a team. Changes are not allowed!");
+      return;
+    }
+
+    setSelectedPlayers(selectedPlayers.filter(player => player._id !== playerToRemove._id));
+    setRemainingBudget(remainingBudget + playerToRemove.calculated.value);
+    setErrorMessage("");
+  };
+
   // Filter players based on the selected criteria
   const filterPlayers = () => {
-    return players.filter((player) => !selectedPlayers.includes(player));
+    return players.filter((player) => !selectedPlayers.some(selected => selected._id === player._id));
   };
 
   // Count the number of each role
@@ -46,15 +104,88 @@ const TeamSelection = ({ user }) => {
     return selectedPlayers.filter((player) => player.category === role).length;
   };
 
-  // Ensure role constraints are met
+  // Check if team composition meets requirements
   const canSelect = () => {
-    return (
-      countRoles("Batsman") < 5 &&
-      countRoles("Bowler") < 3 &&
-      countRoles("All-Rounder") < 2 &&
-      selectedPlayers.length < 11
-    );
+    // You can uncomment these constraints if needed
+    // const batsmenCount = countRoles("Batsman");
+    // const bowlersCount = countRoles("Bowler");
+    // const allRoundersCount = countRoles("All-Rounder");
+    
+    // return (
+    //   batsmenCount <= 5 &&
+    //   bowlersCount <= 3 &&
+    //   allRoundersCount <= 2 &&
+    //   selectedPlayers.length === 11
+    // );
+
+    // Simplified version - just check if we have exactly 11 players
+    return selectedPlayers.length === 11;
   };
+
+  // Handle team submission
+  const handleSubmitTeam = async () => {
+    if (teamExists) {
+      setErrorMessage("You have already created a team. Changes are not allowed!");
+      return;
+    }
+
+    if (!userId) {
+      setErrorMessage("You must be logged in to submit a team.");
+      return;
+    }
+
+    if (!canSelect()) {
+      setErrorMessage("You must select exactly 11 players.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      
+      const response = await fetch("http://localhost:5000/api/select-team", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          playerIds: selectedPlayers.map(player => player._id)
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessMessage(data.message);
+        setTeamExists(true);
+        setErrorMessage("");
+      } else {
+        setErrorMessage(data.message || "Failed to submit team. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting team:", error);
+      setErrorMessage("An error occurred while submitting your team.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (teamExists) {
+    return (
+      <div className="team-selection">
+        <h2>Your Team</h2>
+        <div className="info-message success">
+          You have already created your team. Changes are not allowed at this time.
+        </div>
+        <button 
+          className="view-leaderboard-button"
+          onClick={() => window.location.href = "/leaderboard"}
+        >
+          View Leaderboard
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="team-selection">
@@ -62,8 +193,27 @@ const TeamSelection = ({ user }) => {
       <div className="budget">
         <p>Remaining Budget: ₹{remainingBudget}</p>
       </div>
+      
       {errorMessage && <div className="error">{errorMessage}</div>}
+      {successMessage && <div className="success">{successMessage}</div>}
 
+      <div className="selected-players">
+        <h3>Selected Players ({selectedPlayers.length}/11)</h3>
+        {selectedPlayers.length > 0 ? (
+          <ul>
+            {selectedPlayers.map((player) => (
+              <li key={player._id} onClick={() => handlePlayerRemoval(player)} className="selected-player-item">
+                {player.firstName} {player.lastName} - {player.category} (₹{player.calculated.value})
+                <span className="remove-icon">×</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No players selected yet</p>
+        )}
+      </div>
+
+      <h3>Available Players</h3>
       <div className="player-list">
         {filterPlayers().map((player) => (
           <div
@@ -79,22 +229,12 @@ const TeamSelection = ({ user }) => {
         ))}
       </div>
 
-      <div className="selected-players">
-        <h3>Selected Players</h3>
-        <ul>
-          {selectedPlayers.map((player) => (
-            <li key={player._id}>
-              {player.firstName} {player.lastName} - {player.category}
-            </li>
-          ))}
-        </ul>
-      </div>
-
       <button
         className="submit-button"
-        disabled={selectedPlayers.length !== 11 || !canSelect()}
+        disabled={!canSelect() || loading}
+        onClick={handleSubmitTeam}
       >
-        Submit Team
+        {loading ? "Submitting..." : "Submit Team"}
       </button>
     </div>
   );

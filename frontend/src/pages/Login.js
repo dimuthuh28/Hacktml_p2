@@ -24,6 +24,7 @@ const Login = () => {
   
       localStorage.setItem("token", res.data.token); // Store token
       localStorage.setItem("username", username);
+      localStorage.setItem("id", res._id);
   
       // Fetch user role from /get-role route
       const roleRes = await axios.post("http://localhost:5000/api/users/get-role", {
