@@ -25,8 +25,8 @@ const getPlayerById = async (req, res) => {
       ...player.toObject(),
       calculated: {
         ...player.calculated,
-        bowlingStrikeRate: player.calculated.bowlingStrikeRate === "Undefined" 
-          ? "Undefined" 
+        bowlingStrikeRate: player.calculated.bowlingStrikeRate === 0 
+          ? "Undefined"  // If no wickets, set "Undefined"
           : player.calculated.bowlingStrikeRate.toFixed(2)
       }
     };
@@ -36,6 +36,7 @@ const getPlayerById = async (req, res) => {
     res.status(500).json({ message: "Error fetching player", error });
   }
 };
+
 
 // Add a new player
 const addPlayer = async (req, res) => {

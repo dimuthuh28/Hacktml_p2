@@ -3,7 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import AdminLayout from "./components/AdminLayout";
 import GuestHomePage from "./pages/GuestHomePage";
 import Login from "./pages/Login";
-import PlayerStats from "./pages/Admin/PlayerStats";
+import PlayerStatsView from "./pages/Admin/PlayerStats";
 import PlayersView from "./pages/Admin/PlayersView";
 import React from "react";
 import Reguserhome from "./pages/Reguserhome";
@@ -25,7 +25,7 @@ function App() {
           {/* The default route will render AdminDash directly */}
           <Route index element={<div><h1>Admin Dashboard</h1><p>Welcome to the admin dashboard.</p></div>} /> 
           <Route path="players" element={<PlayersView />} />
-          <Route path="stats" element={<PlayerStats />} />
+          <Route path="stats" element={<PlayerStatsView />} />
           <Route path="summary" element={<TournamentSummary />} />
         </Route>
       </Routes>
