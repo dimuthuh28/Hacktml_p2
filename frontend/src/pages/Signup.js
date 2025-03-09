@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import InputField from "../components/InputField";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -58,6 +58,9 @@ const Signup = () => {
           />
           <button className="auth-button" type="submit">Signup</button>
         </form>
+        <div className="auth-links">
+          Already have an account? <Link to="/login">Login</Link>
+        </div>
       </div>
     </div>
   );
