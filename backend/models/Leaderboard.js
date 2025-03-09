@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 const leaderboardSchema = new mongoose.Schema({
   player: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Player',  // Reference to the Player model
+    ref: 'Player',  
     required: true
   },
   team: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Team',  // Reference to the Team model
+    ref: 'Team',  
     required: true
   },
   totalRuns: {
