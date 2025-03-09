@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const { getAllPlayers, getPlayerById, addPlayer, updatePlayer, deletePlayer } = require('../controllers/playerController');  
 
 // Routes
