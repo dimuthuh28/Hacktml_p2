@@ -92,10 +92,15 @@ To restore the database from the dump file, use the `mongorestore` command:
 
 
 User Feedback & Error Handling: Clear user messages and effective error management.
+
 Testing & Reliability: Thorough testing for functionality and performance.
+
 Security & Logging: Proper error logging and secure operations.
+
 Cross-Browser & Performance: Optimized for speed and compatibility across browsers.
+
 Player Selection & Budgeting: Users can buy players anytime within the Rs. 9,000,000 budget, ensuring strategic team-building
+
 Admin Control & Fair Play: Admins manage player data, while the system enforces budget limits and fair gameplay.
 
 
@@ -103,9 +108,15 @@ Admin Control & Fair Play: Admins manage player data, while the system enforces 
 
 
 JWT tokens are used for Authentication and Authorisation. Those tokens are only valid for an hour.
+
 Secured system. Passwords are hashed.
+
 Responsive.  
+
 All the Data gathered in this system is encrypted.
+
 Only Users who have access privileges can login to the system because of the JWT tokens.
+
 AI-Powered Assistance using gemini API.
+
 Live Performance & Scoring
