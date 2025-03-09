@@ -32,7 +32,7 @@ exports.updateMatchStats = async (req, res) => {
 };
 
 // Controller to handle updating player stats
-const updatePlayerStatsController = async (req, res) => {
+exports.updatePlayerStatsController = async (req, res) => {
   try {
     const { playerId, runs, wickets, points } = req.body;
     

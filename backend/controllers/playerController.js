@@ -25,8 +25,9 @@ const getPlayerById = async (req, res) => {
       ...player.toObject(),
       calculated: {
         ...player.calculated,
-        bowlingStrikeRate: player.calculated.bowlingStrikeRate === "Undefined" 
-          ? "Undefined" 
+
+        bowlingStrikeRate: player.calculated.bowlingStrikeRate === 0 
+          ? "Undefined"  // If no wickets, set "Undefined"
           : player.calculated.bowlingStrikeRate.toFixed(2)
       }
     };
@@ -69,3 +70,37 @@ const addPlayer = async (req, res) => {
 };
 
 module.exports = { getAllPlayers, getPlayerById, addPlayer };  
+
+// Update player by ID
+const updatePlayer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedPlayer = await Player.findByIdAndUpdate(id, req.body, { new: true });
+
+    if (!updatedPlayer) {
+      return res.status(404).json({ message: "Player not found" });
+    }
+
+    res.status(200).json({ message: "Player updated successfully", player: updatedPlayer });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating player", error });
+  }
+};
+
+// Delete player by ID
+const deletePlayer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedPlayer = await Player.findByIdAndDelete(id);
+
+    if (!deletedPlayer) {
+      return res.status(404).json({ message: "Player not found" });
+    }
+
+    res.status(200).json({ message: "Player deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting player", error });
+  }
+};
+
+module.exports = { getAllPlayers, getPlayerById, addPlayer, updatePlayer, deletePlayer };

@@ -1,0 +1,129 @@
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .auth-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+  }
+  
+  .auth-box h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .auth-input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .auth-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .auth-button:hover {
+    background-color: #45a049;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .logout-button {
+    background-color: #d9534f;
+  }
+  
+  .logout-button:hover {
+    background-color: #c9302c;
+  }
+  
+  /* Auth.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f2a44;
+  padding: 10px 20px;
+  color: white;
+}
+
+.navbar .logo h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.navbar .nav-links {
+  display: flex;
+}
+
+.nav-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.nav-button:hover {
+  background-color: #45a049;
+}
+
+.guest-home-content {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.guest-home-content h2 {
+  font-size: 28px;
+  color: #333;
+}
+
+.guest-home-content p {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Auth.css (Add to existing file) */
+.dashboard-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.dashboard-content {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.dashboard-content h2 {
+  font-size: 28px;
+  color: #333;
+}
+
+.dashboard-content p {
+  font-size: 18px;
+  color: #666;
+}
