@@ -1,6 +1,6 @@
 import "../../styles/TournamentSummary.css";
 
-import { Container, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const TournamentSummary = () => {
@@ -26,41 +26,25 @@ const TournamentSummary = () => {
         `${player.firstName} ${player.lastName}`.toLowerCase().includes(search.toLowerCase())
     );
 
-    // Sorting players by stats (descending order)
-    const sortPlayersByStat = (stat) => {
-        return [...filteredPlayers].sort((a, b) => b.calculated[stat] - a.calculated[stat]);
-    };
+    // Sorting players by most runs (descending order)
+    const sortedByRuns = [...filteredPlayers].sort((a, b) => b.stats.totalRuns - a.stats.totalRuns);
 
-    // Ranking players based on a specific stat
-    const rankPlayers = (sortedPlayers) => {
-        return sortedPlayers.map((player, index) => ({
-            ...player,
-            rank: index + 1 // Assign rank starting from 1
-        }));
-    };
-
-    // Get sorted and ranked players for each stat
-    const sortedByBattingStrikeRate = rankPlayers(sortPlayersByStat("battingStrikeRate"));
-    const sortedByBattingAverage = rankPlayers(sortPlayersByStat("battingAverage"));
-    const sortedByBowlingStrikeRate = rankPlayers(sortPlayersByStat("bowlingStrikeRate"));
-    const sortedByEconomyRate = rankPlayers(sortPlayersByStat("economyRate"));
+    // Sorting players by most wickets (descending order)
+    const sortedByWickets = [...filteredPlayers].sort((a, b) => b.stats.wickets - a.stats.wickets);
 
     return (
         <Container>
-            
             <h3>Top 5 Players by Most Runs</h3>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell><strong>Rank</strong></TableCell>
                         <TableCell><strong>Player Name</strong></TableCell>
                         <TableCell><strong>Total Runs</strong></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedByBattingStrikeRate.slice(0, 5).map((player) => (
+                    {sortedByRuns.slice(0, 5).map((player) => (
                         <TableRow key={player._id}>
-                            <TableCell>{player.rank}</TableCell>
                             <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
                             <TableCell>{player.stats.totalRuns}</TableCell>
                         </TableRow>
@@ -68,81 +52,19 @@ const TournamentSummary = () => {
                 </TableBody>
             </Table>
 
-            <h3>Top 5 Players by Batting Strike Rate</h3>
+            <h3>Top 5 Players by Most Wickets</h3>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell><strong>Rank</strong></TableCell>
                         <TableCell><strong>Player Name</strong></TableCell>
-                        <TableCell><strong>Batting Strike Rate</strong></TableCell>
+                        <TableCell><strong>Wickets</strong></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedByBattingStrikeRate.slice(0, 5).map((player) => (
+                    {sortedByWickets.slice(0, 5).map((player) => (
                         <TableRow key={player._id}>
-                            <TableCell>{player.rank}</TableCell>
                             <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
-                            <TableCell>{player.calculated.battingStrikeRate}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
-            <h3>Top 5 Players by Batting Average</h3>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell><strong>Rank</strong></TableCell>
-                        <TableCell><strong>Player Name</strong></TableCell>
-                        <TableCell><strong>Batting Average</strong></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {sortedByBattingAverage.slice(0, 5).map((player) => (
-                        <TableRow key={player._id}>
-                            <TableCell>{player.rank}</TableCell>
-                            <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
-                            <TableCell>{player.calculated.battingAverage}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
-            <h3>Top 5 Players by Bowling Strike Rate</h3>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell><strong>Rank</strong></TableCell>
-                        <TableCell><strong>Player Name</strong></TableCell>
-                        <TableCell><strong>Bowling Strike Rate</strong></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {sortedByBowlingStrikeRate.slice(0, 5).map((player) => (
-                        <TableRow key={player._id}>
-                            <TableCell>{player.rank}</TableCell>
-                            <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
-                            <TableCell>{player.calculated.bowlingStrikeRate}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
-            <h3>Top 5 Players by Economy Rate</h3>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell><strong>Rank</strong></TableCell>
-                        <TableCell><strong>Player Name</strong></TableCell>
-                        <TableCell><strong>Economy Rate</strong></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {sortedByEconomyRate.slice(0, 5).map((player) => (
-                        <TableRow key={player._id}>
-                            <TableCell>{player.rank}</TableCell>
-                            <TableCell>{`${player.firstName} ${player.lastName}`}</TableCell>
-                            <TableCell>{player.calculated.economyRate}</TableCell>
+                            <TableCell>{player.stats.wickets}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
