@@ -42,6 +42,4 @@ const leaderboardSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-
 module.exports =  mongoose.model('Leaderboard', leaderboardSchema);
-
