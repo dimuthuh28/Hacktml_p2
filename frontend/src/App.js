@@ -10,14 +10,14 @@ import Reguserhome from "./pages/Reguserhome";
 import Signup from "./pages/Signup";
 import TournamentSummary from "./pages/Admin/TournementSummary";
 import SpiriterChat from "./components/spiriterChat";
-import Navbar from "./components/Navbar";
+import Navbar-u from "./components/Navbar-u";
 import UserDashboard from "./pages/Dashboard";
 import TeamSelection from "./components/TeamSelection";
 
 function App() {
   return (
     <Router>
-      <Navbar />
+      <Navbar-u />
 
       <Routes>
         <Route path="/" element={<GuestHomePage />} />
