@@ -1,7 +1,19 @@
 import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, List, ListItem, ListItemText, Paper, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
+import EditIcon from '@mui/icons-material/Edit';
+import { styled } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
+
+// Styled edit button component
+const EditButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.secondary.contrastText,
+  marginTop: 16,
+  '&:hover': {
+    backgroundColor: theme.palette.secondary.dark,
+  },
+}));
 
 const PlayerStatsView = () => {
   const [players, setPlayers] = useState([]);
@@ -92,64 +104,49 @@ const PlayerStatsView = () => {
     }));
   };
 
-  // Handle input changes for calculated values
-  const handleCalculatedInputChange = (event) => {
-    const { name, value } = event.target;
-    setEditingPlayer((prev) => ({
-      ...prev,
-      calculated: {
-        ...prev.calculated,
-        [name]: value,
-      },
-    }));
-  };
-
   // Handle player update
- // Handle player update
-const handleUpdatePlayer = async () => {
-  try {
-    if (!editingPlayer) return;
+  const handleUpdatePlayer = async () => {
+    try {
+      if (!editingPlayer) return;
 
-    // Extract only the stats and calculated values from the editing player
-    const updatedPlayerData = {
-      totalRuns: editingPlayer.stats.totalRuns,
-      ballsFaced: editingPlayer.stats.ballsFaced,
-      inningsPlayed: editingPlayer.stats.inningsPlayed,
-      wickets: editingPlayer.stats.wickets,
-      oversBowled: editingPlayer.stats.oversBowled,
-      runsConceded: editingPlayer.stats.runsConceded,
-      category: editingPlayer.category
-    };
+      // Extract only the stats and category values from the editing player
+      const updatedPlayerData = {
+        totalRuns: editingPlayer.stats.totalRuns,
+        ballsFaced: editingPlayer.stats.ballsFaced,
+        inningsPlayed: editingPlayer.stats.inningsPlayed,
+        wickets: editingPlayer.stats.wickets,
+        oversBowled: editingPlayer.stats.oversBowled,
+        runsConceded: editingPlayer.stats.runsConceded,
+        category: editingPlayer.category
+      };
 
-    // Send the updated player data to the backend
-    const response = await fetch(`http://localhost:5000/api/players/playerstate/${expandedPlayer._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedPlayerData),
-    });
+      // Send the updated player data to the backend
+      const response = await fetch(`http://localhost:5000/api/players/playerstate/${expandedPlayer._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedPlayerData),
+      });
 
-    if (response.ok) {
-      const result = await response.json(); // Get the response from the server
-      
-      // Fetch the updated player to ensure we have the latest data with recalculated values
-      const playerResponse = await fetch(`http://localhost:5000/api/players/${expandedPlayer._id}`);
-      const updatedPlayer = await playerResponse.json();
+      if (response.ok) {
+        // Fetch the updated player to ensure we have the latest data with recalculated values
+        const playerResponse = await fetch(`http://localhost:5000/api/players/${expandedPlayer._id}`);
+        const updatedPlayer = await playerResponse.json();
 
-      // Update the state with the updated player
-      setPlayers(players.map(player =>
-        player._id === updatedPlayer._id ? updatedPlayer : player
-      ));
-      setExpandedPlayer(updatedPlayer); // Update the expanded player view
-      setEditingPlayer(null); // Reset editing state
-    } else {
-      console.error("Error updating player:", response.statusText);
+        // Update the state with the updated player
+        setPlayers(players.map(player =>
+          player._id === updatedPlayer._id ? updatedPlayer : player
+        ));
+        setExpandedPlayer(updatedPlayer); // Update the expanded player view
+        setEditingPlayer(null); // Reset editing state
+      } else {
+        console.error("Error updating player:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating player:", error);
     }
-  } catch (error) {
-    console.error("Error updating player:", error);
-  }
-};
+  };
 
   // Close the modal
   const handleClose = () => {
@@ -280,104 +277,51 @@ const handleUpdatePlayer = async () => {
                         <Typography variant="body1"><strong>Runs Conceded:</strong> {expandedPlayer.stats.runsConceded}</Typography>
                       </>
                     )}
+                    {editingPlayer ? (
+                      <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
+                        <Button 
+                          onClick={handleCancelEdit} 
+                          color="inherit"
+                          variant="outlined"
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={handleUpdatePlayer} 
+                          color="primary"
+                          variant="contained"
+                        >
+                          Save
+                        </Button>
+                      </Box>
+                    ) : (
+                      <EditButton 
+                        onClick={handleEditPlayer} 
+                        variant="contained" 
+                        startIcon={<EditIcon />}
+                      >
+                        Edit
+                      </EditButton>
+                    )}
                   </Box>
                 )}
                 {selectedTab === 1 && (
                   <Box>
-                    {editingPlayer ? (
-                      <>
-                        <TextField
-                          label="Batting Strike Rate"
-                          variant="outlined"
-                          fullWidth
-                          value={editingPlayer.calculated.battingStrikeRate}
-                          onChange={handleCalculatedInputChange}
-                          name="battingStrikeRate"
-                          style={{ marginBottom: 10 }}
-                        />
-                        <TextField
-                          label="Batting Average"
-                          variant="outlined"
-                          fullWidth
-                          value={editingPlayer.calculated.battingAverage}
-                          onChange={handleCalculatedInputChange}
-                          name="battingAverage"
-                          style={{ marginBottom: 10 }}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body1"><strong>Batting Strike Rate:</strong> {expandedPlayer.calculated.battingStrikeRate}</Typography>
-                        <Typography variant="body1"><strong>Batting Average:</strong> {expandedPlayer.calculated.battingAverage}</Typography>
-                      </>
-                    )}
+                    <Typography variant="body1"><strong>Batting Strike Rate:</strong> {expandedPlayer.calculated.battingStrikeRate}</Typography>
+                    <Typography variant="body1"><strong>Batting Average:</strong> {expandedPlayer.calculated.battingAverage}</Typography>
                   </Box>
                 )}
                 {selectedTab === 2 && (
                   <Box>
-                    {editingPlayer ? (
-                      <>
-                        <TextField
-                          label="Bowling Strike Rate"
-                          variant="outlined"
-                          fullWidth
-                          value={editingPlayer.calculated.bowlingStrikeRate}
-                          onChange={handleCalculatedInputChange}
-                          name="bowlingStrikeRate"
-                          style={{ marginBottom: 10 }}
-                        />
-                        <TextField
-                          label="Economy Rate"
-                          variant="outlined"
-                          fullWidth
-                          value={editingPlayer.calculated.economyRate}
-                          onChange={handleCalculatedInputChange}
-                          name="economyRate"
-                          style={{ marginBottom: 10 }}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body1"><strong>Bowling Strike Rate:</strong> {expandedPlayer.calculated.bowlingStrikeRate}</Typography>
-                        <Typography variant="body1"><strong>Economy Rate:</strong> {expandedPlayer.calculated.economyRate}</Typography>
-                      </>
-                    )}
+                    <Typography variant="body1"><strong>Bowling Strike Rate:</strong> {expandedPlayer.calculated.bowlingStrikeRate}</Typography>
+                    <Typography variant="body1"><strong>Economy Rate:</strong> {expandedPlayer.calculated.economyRate}</Typography>
                   </Box>
                 )}
                 {selectedTab === 3 && (
                   <Box>
-                    {editingPlayer ? (
-                      <>
-                        <TextField
-                          label="Points"
-                          variant="outlined"
-                          fullWidth
-                          value={editingPlayer.calculated.points}
-                          onChange={handleCalculatedInputChange}
-                          name="points"
-                          style={{ marginBottom: 10 }}
-                        />
-                        <TextField
-                          label="Player Value"
-                          variant="outlined"
-                          fullWidth
-                          value={editingPlayer.calculated.value}
-                          onChange={handleCalculatedInputChange}
-                          name="value"
-                          style={{ marginBottom: 10 }}
-                        />
-                        <Typography variant="body1">
-                          <strong>Value in Rupees: </strong> 
-                          Rs.{(editingPlayer.calculated.points * 9 + 100) * 1000}
-                        </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body1"><strong>Points:</strong> {expandedPlayer.calculated.points}</Typography>
-                        <Typography variant="body1"><strong>Player Value:</strong> {expandedPlayer.calculated.value}</Typography>
-                        <Typography variant="body1"><strong>Value in Rupees: </strong> Rs.{(expandedPlayer.calculated.points * 9 + 100) * 1000}</Typography>
-                      </>
-                    )}
+                    <Typography variant="body1"><strong>Points:</strong> {expandedPlayer.calculated.points}</Typography>
+                    <Typography variant="body1"><strong>Player Value:</strong> {expandedPlayer.calculated.value}</Typography>
+                    <Typography variant="body1"><strong>Value in Rupees: </strong> Rs.{(expandedPlayer.calculated.points * 9 + 100) * 1000}</Typography>
                   </Box>
                 )}
               </Box>
@@ -386,14 +330,6 @@ const handleUpdatePlayer = async () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">Close</Button>
-          {editingPlayer ? (
-            <>
-              <Button onClick={handleCancelEdit} color="secondary">Cancel</Button>
-              <Button onClick={handleUpdatePlayer} color="primary">Save</Button>
-            </>
-          ) : (
-            <Button onClick={handleEditPlayer} color="secondary">Edit</Button>
-          )}
         </DialogActions>
       </Dialog>
     </Container>
