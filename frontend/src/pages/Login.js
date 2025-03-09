@@ -3,9 +3,9 @@ import "../styles/Auth.css";
 import React, { useState } from "react";
 
 import InputField from "../components/InputField";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
